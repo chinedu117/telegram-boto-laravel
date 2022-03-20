@@ -1,4 +1,4 @@
-### Dockerized Laravel template for development
+### Telegram bot
 
 ### Start dev
 
