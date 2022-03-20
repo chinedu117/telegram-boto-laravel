@@ -52,7 +52,7 @@ class TelegramBotController extends Controller {
 
     }
 
-    public function webhook(Request $request){
+    public function webhookGetUpdates(Request $request){
 
         // 
         $updates = null;
