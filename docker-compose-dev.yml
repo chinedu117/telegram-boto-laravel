@@ -29,7 +29,7 @@ services:
     working_dir: /var/www/html
     tty: true
     volumes:
-      - "/var/www/html/vendor"
+      # - "/var/www/html/vendor"
       - "./:/var/www/html"
       - "./docker-compose/php/local.ini:/usr/local/etc/php/conf.d/local.ini"
 

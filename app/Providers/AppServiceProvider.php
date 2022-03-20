@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        $response = Http::post('https://api.telegram.org/bot[' . env('TELEGRAM_BOT_TOKEN') . ']/setwebhook?url=' . env('APP_URL') . 'api/V1/bot/Psdsdsdsds00199183Epn5i3q6vjdhh7hl7djVWDIAVhFDRMAwZ1tj0Og2v4PWyj4PZ/webhook');
     }
 }
