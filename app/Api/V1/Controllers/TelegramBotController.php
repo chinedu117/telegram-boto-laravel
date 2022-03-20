@@ -20,11 +20,11 @@ use Carbon\Carbon;
 class TelegramBotController extends Controller {
    
 
-    public function sendTestMessage(){
+    // public function sendTestMessage(){
          
-        return response()->json(["message" => "ok"]);
+    //     return response()->json(["message" => "ok"]);
 
-    }
+    // }
 
    
      /**
