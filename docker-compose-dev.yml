@@ -1,0 +1,49 @@
+version: "3.7"
+services:
+
+
+  db:
+    image: mysql:5.7
+    container_name: ${PROJECT_NAME}_db
+    restart: unless-stopped
+    tty: true
+    ports: 
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE:  ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - "./docker-compose/mysql/data:/var/lib/mysql"      
+    
+  app:
+    depends_on: 
+      - db
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    container_name: ${PROJECT_NAME}_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    tty: true
+    volumes:
+      - "/var/www/html/vendor"
+      - "./:/var/www/html"
+      - "./docker-compose/php/local.ini:/usr/local/etc/php/conf.d/local.ini"
+
+
+  nginx:
+    image: nginx:1.17-alpine
+    depends_on: 
+      - app
+    container_name: ${PROJECT_NAME}-nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 8000:80
+    volumes:
+      - "./:/var/www/html"
+      - "./docker-compose/nginx:/etc/nginx/conf.d"
+    
