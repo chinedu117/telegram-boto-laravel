@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Carbon\Carbon;
 
+/**
+ * @OA\Schema(
+ *     title="TelegramBotController",
+ *     description="TelegramBotController",
+ *     @OA\Xml(
+ *         name="TelegramBotController"
+ *     )
+ * )
+ */
 class TelegramBotController extends Controller {
    
 
@@ -18,7 +27,39 @@ class TelegramBotController extends Controller {
     }
 
    
-
+     /**
+     *@OA\Post(
+     *      path="/bot/subscribe-user",
+     *      operationId="subscribe",
+     *      tags="Telegram Bot",
+     *      summary="Subscribe user to chat",
+     *      description="Subscribe user to chat",
+     *      @OA\Parameter(
+     *         description="Chat id",
+     *         in="path",
+     *         name="chatID",
+     *         required=true,
+     *         @OA\Schema(
+     *          anyOf={@OA\Schema(type="integer", format="int64"), @OA\Schema(type="string", format="string")}
+     *         )
+     *      ),
+     *      @OA\Produces(
+     *          "application/json"
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Subscribed to channel",
+     *          @OA\JsonContent(ref="")
+     *       ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="User ID Header required"
+     *      )
+     *)
+     */
     public function subscribeUserToChat(Request $request, $chatID){
         try {
             Telegram::chatJoinRequest([
@@ -32,10 +73,49 @@ class TelegramBotController extends Controller {
             throw new GenericExceptionHandler("Unable to subscribe to channel",400);
         }
 
-        return response()->json(["message" => "Subscribes to channel"]);
+        return response()->json(["message" => "Subscribed to channel."]);
     }
     
 
+    /**
+     *@OA\Post(
+     *      path="bot/{chatID}/broadcast-message",
+     *      operationId="sendMessageToSubscibers",
+     *      tags="Telegram Bot",
+     *      summary="Send message to subscribers to a chat",
+     *      description="Sends message to chat",
+     *      @OA\Produces(
+     *          "application/json"
+     *      ),
+     *      @OA\Parameter(
+     *         description="Chat id",
+     *         in="path",
+     *         parameter="chatID_required",
+     *         name="chatID",
+     *         required=true,
+     *         @OA\Schema(
+     *          anyOf={@OA\Schema(type="integer", format="int64"), @OA\Schema(type="string", format="string")}
+     *         )
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Message sent.",
+     *          @OA\JsonContent(ref="")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Unable to send message",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     
+     *)
+     */
     public function sendMessageToSubscibers(Request $request, $chatID){
 
         try {
@@ -51,7 +131,25 @@ class TelegramBotController extends Controller {
         return response()->json(["message" => "Message sent."]);
 
     }
-
+    
+    
+    /**
+     *@OA\Post(
+     *      path='/bot/Psdsdsdsds00199183Epn5i3q6vjdhh7hl7djVWDIAVhFDRMAwZ1tj0Og2v4PWyj4PZ/webhook',
+     *      operationId="webhookGetUpdates",
+     *      tags="Telegram Bot",
+     *      summary="Webhook to receive updates",
+     *      description="Webhook to receive updates",
+     *      @OA\Produces(
+     *          "application/json"
+     *      ),
+    *      @OA\Response(
+     *          response=200,
+     *          description="Updates received.",
+     *          @OA\JsonContent(ref="")
+     *       )
+     *)
+     */
     public function webhookGetUpdates(Request $request){
 
         // 
